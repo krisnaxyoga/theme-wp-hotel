@@ -1,0 +1,221 @@
+* CSS tambahan untuk memastikan WordPress block editor berfungsi dengan baik */
+.prose {
+    /* Perbaikan untuk list WordPress blocks */
+}
+
+.prose ul {
+    list-style-type: disc !important;
+    padding-left: 2rem !important;
+    margin: 1.5rem 0 !important;
+    display: block !important;
+}
+
+.prose ol {
+    list-style-type: decimal !important;
+    padding-left: 2rem !important;
+    margin: 1.5rem 0 !important;
+    display: block !important;
+}
+
+.prose li {
+    display: list-item !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.75 !important;
+    color: #374151 !important;
+    padding-left: 0.5rem !important;
+}
+
+.prose li::marker {
+    color: #16a34a !important;
+    font-weight: bold !important;
+}
+
+/* Nested lists */
+.prose ul ul,
+.prose ol ol,
+.prose ul ol,
+.prose ol ul {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Perbaikan untuk headings */
+.prose h2:not(.wp-block-heading h2),
+.prose .wp-block-heading h2 {
+    color: var(--tw-prose-bptgold, #2a2a2a) !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.75rem !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    line-height: 1.25 !important;
+}
+
+.prose h3:not(.wp-block-heading h3),
+.prose .wp-block-heading h3 {
+    color: var(--tw-prose-bptgold, #2a2a2a) !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.prose h4:not(.wp-block-heading h4),
+.prose .wp-block-heading h4,
+.prose h5:not(.wp-block-heading h5),
+.prose .wp-block-heading h5,
+.prose h6:not(.wp-block-heading h6),
+.prose .wp-block-heading h6 {
+    color: var(--tw-prose-bptgold, #2a2a2a) !important;
+    font-weight: 600 !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* WordPress block quote */
+.prose .wp-block-quote,
+.prose blockquote {
+    border-left: 4px solid var(--tw-prose-bptgold, #2a2a2a) !important;
+    padding-left: 1.5rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    background-color: #f9fafb !important;
+    border-radius: 0 0.375rem 0.375rem 0 !important;
+    font-style: italic !important;
+    margin: 1.5rem 0 !important;
+}
+
+.prose .wp-block-quote p,
+.prose blockquote p {
+    margin-bottom: 0.5rem !important;
+}
+
+.prose .wp-block-quote p:last-child,
+.prose blockquote p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* WordPress block images */
+.prose .wp-block-image,
+.prose .wp-block-media-text {
+    margin-bottom: 2rem !important;
+}
+
+.prose .wp-block-image img {
+    border-radius: 0.5rem !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+    width: 100% !important;
+}
+
+.prose .wp-block-image figcaption {
+    color: var(--tw-prose-bptgold, #2a2a2a) !important;
+    text-align: center !important;
+    font-size: 0.875rem !important;
+    margin-top: 0.5rem !important;
+    font-weight: 500 !important;
+}
+
+/* WordPress table blocks */
+.prose .wp-block-table table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.prose .wp-block-table th {
+    border: 1px solid #d1d5db !important;
+    background-color: #f9fafb !important;
+    padding: 0.75rem 1rem !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+}
+
+.prose .wp-block-table td {
+    border: 1px solid #d1d5db !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.prose .wp-block-table tr:nth-child(odd) {
+    background-color: white !important;
+    color: var(--tw-prose-bptdarkblue, #1e293b) !important;
+}
+
+.prose .wp-block-table tr:nth-child(even) {
+    background-color: var(--tw-prose-bptdarkblue, #1e293b) !important;
+    color: white !important;
+}
+
+/* WordPress paragraph spacing */
+.prose .wp-block-paragraph,
+.prose p {
+    margin-bottom: 1rem !important;
+    line-height: 1.75 !important;
+    color: #374151 !important;
+}
+
+/* WordPress code blocks */
+.prose .wp-block-code {
+    background-color: #111827 !important;
+    color: white !important;
+    border-radius: 0.5rem !important;
+    padding: 1rem !important;
+    overflow-x: auto !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.prose code:not(.wp-block-code code) {
+    background-color: #f3f4f6 !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 0.25rem !important;
+    font-size: 0.875rem !important;
+    font-family: ui-monospace, monospace !important;
+    color: #1f2937 !important;
+}
+
+/* Strong dan emphasis */
+.prose strong {
+    color: var(--tw-prose-bptgold, #2a2a2a) !important;
+    font-weight: 600 !important;
+}
+
+.prose em {
+    font-style: italic !important;
+    color: #4b5563 !important;
+}
+
+/* Links */
+.prose a {
+    color: var(--tw-prose-bptgold, #2a2a2a) !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+}
+
+.prose a:hover {
+    color: white !important;
+    text-decoration: underline !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .prose {
+        font-size: 0.95rem !important;
+    }
+    
+    .prose h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    .prose h2 {
+        font-size: 1.375rem !important;
+    }
+    
+    .prose h3 {
+        font-size: 1.125rem !important;
+    }
+    
+    .prose ul,
+    .prose ol {
+        padding-left: 1.25rem !important;
+    }
+}
