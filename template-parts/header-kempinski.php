@@ -92,7 +92,7 @@
                     <a href="<?php echo esc_url(ptg_wa_link("Hello, I would like to inquire about Terra Eden villas")); ?>"
                        target="_blank"
                        rel="noopener"
-                       class="inline-flex items-center gap-2 bg-[#b5a191] hover:bg-[#a08d7a] text-[#514d32] px-6 py-3 text-sm uppercase tracking-[0.1em] font-medium transition-all duration-300">
+                       class="inline-flex items-center gap-2 bg-[#b5a191] hover:bg-[#a08d7a] text-[#514d32] px-6 py-3 text-sm uppercase tracking-[0.1em] font-medium transition-all duration-300 rounded-full">
                         <span><?php echo esc_html(get_theme_mod('header_cta_text', 'Book Now')); ?></span>
                     </a>
                 </nav>
@@ -137,7 +137,7 @@
                 <a href="<?php echo esc_url(ptg_wa_link("Hello, I would like to inquire about Terra Eden villas")); ?>"
                    target="_blank"
                    rel="noopener"
-                   class="inline-flex items-center justify-center gap-2 bg-[#b5a191] text-[#514d32] px-6 py-4 text-sm uppercase tracking-[0.1em] font-medium mt-4 mobile-menu-link">
+                   class="inline-flex items-center justify-center gap-2 bg-[#b5a191] text-[#514d32] px-6 py-4 text-sm uppercase tracking-[0.1em] font-medium mt-4 mobile-menu-link rounded-full">
                     <span><?php echo esc_html(get_theme_mod('header_cta_text', 'Book Now')); ?></span>
                 </a>
             </nav>
