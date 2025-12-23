@@ -70,20 +70,30 @@
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center gap-8">
-                    <a href="#experiences" class="header-link text-sm uppercase tracking-[0.15em] font-medium transition-colors duration-300 hover:text-[#b5a191]">
-                        Experiences
-                    </a>
-                    <a href="#transport" class="header-link text-sm uppercase tracking-[0.15em] font-medium transition-colors duration-300 hover:text-[#b5a191]">
-                        Transport
-                    </a>
-                    <a href="#faq" class="header-link text-sm uppercase tracking-[0.15em] font-medium transition-colors duration-300 hover:text-[#b5a191]">
-                        FAQ
-                    </a>
-                    <a href="<?php echo esc_url(ptg_wa_link("Hello, I would like to inquire about tours")); ?>"
+                    <?php
+                    if (has_nav_menu('primary')) {
+                        wp_nav_menu(array(
+                            'theme_location' => 'primary',
+                            'container'      => false,
+                            'items_wrap'     => '%3$s',
+                            'walker'         => new Kempinski_Nav_Walker(),
+                            'depth'          => 2,
+                        ));
+                    } else {
+                        // Fallback menu jika belum ada menu yang diset
+                        ?>
+                        <a href="#experiences" class="header-link text-sm uppercase tracking-[0.15em] font-medium transition-colors duration-300 hover:text-[#b5a191]">Experiences</a>
+                        <a href="#villa-types" class="header-link text-sm uppercase tracking-[0.15em] font-medium transition-colors duration-300 hover:text-[#b5a191]">Villa Types</a>
+                        <a href="#facilities" class="header-link text-sm uppercase tracking-[0.15em] font-medium transition-colors duration-300 hover:text-[#b5a191]">Facilities</a>
+                        <?php
+                    }
+                    ?>
+                    <!-- CTA Button - Always visible -->
+                    <a href="<?php echo esc_url(ptg_wa_link("Hello, I would like to inquire about Terra Eden villas")); ?>"
                        target="_blank"
                        rel="noopener"
                        class="inline-flex items-center gap-2 bg-[#b5a191] hover:bg-[#a08d7a] text-[#514d32] px-6 py-3 text-sm uppercase tracking-[0.1em] font-medium transition-all duration-300">
-                        <span>Book Now</span>
+                        <span><?php echo esc_html(get_theme_mod('header_cta_text', 'Book Now')); ?></span>
                     </a>
                 </nav>
 
@@ -105,20 +115,30 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-[#514d32] border-t border-white/10">
             <nav class="container mx-auto px-6 py-8 flex flex-col gap-6">
-                <a href="#experiences" class="text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors">
-                    Experiences
-                </a>
-                <a href="#transport" class="text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors">
-                    Transport
-                </a>
-                <a href="#faq" class="text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors">
-                    FAQ
-                </a>
-                <a href="<?php echo esc_url(ptg_wa_link("Hello, I would like to inquire about tours")); ?>"
+                <?php
+                if (has_nav_menu('primary')) {
+                    wp_nav_menu(array(
+                        'theme_location' => 'primary',
+                        'container'      => false,
+                        'items_wrap'     => '%3$s',
+                        'walker'         => new Kempinski_Mobile_Nav_Walker(),
+                        'depth'          => 2,
+                    ));
+                } else {
+                    // Fallback menu jika belum ada menu yang diset
+                    ?>
+                    <a href="#experiences" class="text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors mobile-menu-link">Experiences</a>
+                    <a href="#villa-types" class="text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors mobile-menu-link">Villa Types</a>
+                    <a href="#facilities" class="text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors mobile-menu-link">Facilities</a>
+                    <?php
+                }
+                ?>
+                <!-- CTA Button - Always visible -->
+                <a href="<?php echo esc_url(ptg_wa_link("Hello, I would like to inquire about Terra Eden villas")); ?>"
                    target="_blank"
                    rel="noopener"
-                   class="inline-flex items-center justify-center gap-2 bg-[#b5a191] text-[#514d32] px-6 py-4 text-sm uppercase tracking-[0.1em] font-medium mt-4">
-                    <span>Book Now</span>
+                   class="inline-flex items-center justify-center gap-2 bg-[#b5a191] text-[#514d32] px-6 py-4 text-sm uppercase tracking-[0.1em] font-medium mt-4 mobile-menu-link">
+                    <span><?php echo esc_html(get_theme_mod('header_cta_text', 'Book Now')); ?></span>
                 </a>
             </nav>
         </div>
@@ -218,15 +238,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Close menu on link click
-        const menuLinks = mobileMenu.querySelectorAll('a');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', function() {
+        // Close menu on link click (termasuk menu dinamis)
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target.closest('a')) {
                 mobileMenu.classList.add('hidden');
                 menuIcon.classList.remove('hidden');
                 closeIcon.classList.add('hidden');
                 document.body.style.overflow = '';
-            });
+            }
         });
     }
 });

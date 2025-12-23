@@ -190,26 +190,151 @@ function get_suggested_content_for_404() {
     // Cari posts berdasarkan URL yang diminta
     $requested_url = $_SERVER['REQUEST_URI'];
     $keywords = explode('/', trim($requested_url, '/'));
-    
+
     $search_terms = array();
     foreach ($keywords as $keyword) {
         if (strlen($keyword) > 3) {
             $search_terms[] = sanitize_text_field($keyword);
         }
     }
-    
+
     if (!empty($search_terms)) {
         $search_query = implode(' ', $search_terms);
-        
+
         $posts = get_posts(array(
             'post_type' => 'post',
             'posts_per_page' => 3,
             's' => $search_query,
             'post_status' => 'publish'
         ));
-        
+
         return $posts;
     }
-    
+
     return false;
+}
+
+/*--------------------------------------------------------------
+7. Custom Nav Walker for Kempinski Header
+--------------------------------------------------------------*/
+class Kempinski_Nav_Walker extends Walker_Nav_Menu {
+
+    // Start Level - for submenus (ul)
+    public function start_lvl(&$output, $depth = 0, $args = null) {
+        $output .= '<ul class="absolute top-full left-0 mt-2 bg-[#514d32] min-w-48 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 shadow-lg">';
+    }
+
+    // End Level
+    public function end_lvl(&$output, $depth = 0, $args = null) {
+        $output .= '</ul>';
+    }
+
+    // Start Element - for each menu item (li)
+    public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        $classes = empty($item->classes) ? array() : (array) $item->classes;
+        $has_children = in_array('menu-item-has-children', $classes);
+
+        // Li classes
+        $li_class = $depth === 0 ? '' : '';
+        if ($has_children && $depth === 0) {
+            $li_class = 'group relative';
+        }
+
+        $output .= '<li class="' . esc_attr($li_class) . '">';
+
+        // Link classes based on depth
+        if ($depth === 0) {
+            $link_class = 'header-link text-sm uppercase tracking-[0.15em] font-medium transition-colors duration-300 hover:text-[#b5a191] inline-flex items-center gap-1';
+        } else {
+            $link_class = 'block px-4 py-2 text-sm text-white/80 hover:text-[#b5a191] hover:bg-white/5 transition-colors';
+        }
+
+        // Build the link
+        $atts = array();
+        $atts['href'] = !empty($item->url) ? $item->url : '';
+        $atts['class'] = $link_class;
+
+        if (!empty($item->target)) {
+            $atts['target'] = $item->target;
+        }
+        if ($item->target === '_blank') {
+            $atts['rel'] = 'noopener';
+        }
+
+        $attributes = '';
+        foreach ($atts as $attr => $value) {
+            if (!empty($value)) {
+                $attributes .= ' ' . $attr . '="' . esc_attr($value) . '"';
+            }
+        }
+
+        $output .= '<a' . $attributes . '>';
+        $output .= esc_html($item->title);
+
+        // Add dropdown arrow for parent items
+        if ($has_children && $depth === 0) {
+            $output .= '<svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
+        }
+
+        $output .= '</a>';
+    }
+
+    // End Element
+    public function end_el(&$output, $item, $depth = 0, $args = null) {
+        $output .= '</li>';
+    }
+}
+
+/*--------------------------------------------------------------
+8. Custom Nav Walker for Mobile Menu
+--------------------------------------------------------------*/
+class Kempinski_Mobile_Nav_Walker extends Walker_Nav_Menu {
+
+    // Start Level - for submenus
+    public function start_lvl(&$output, $depth = 0, $args = null) {
+        $output .= '<ul class="pl-4 mt-2 space-y-2 border-l border-white/20">';
+    }
+
+    // End Level
+    public function end_lvl(&$output, $depth = 0, $args = null) {
+        $output .= '</ul>';
+    }
+
+    // Start Element
+    public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        $output .= '<li>';
+
+        // Link classes based on depth
+        if ($depth === 0) {
+            $link_class = 'text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors mobile-menu-link';
+        } else {
+            $link_class = 'text-white/60 hover:text-[#b5a191] text-sm transition-colors mobile-menu-link';
+        }
+
+        // Build the link
+        $atts = array();
+        $atts['href'] = !empty($item->url) ? $item->url : '';
+        $atts['class'] = $link_class;
+
+        if (!empty($item->target)) {
+            $atts['target'] = $item->target;
+        }
+        if ($item->target === '_blank') {
+            $atts['rel'] = 'noopener';
+        }
+
+        $attributes = '';
+        foreach ($atts as $attr => $value) {
+            if (!empty($value)) {
+                $attributes .= ' ' . $attr . '="' . esc_attr($value) . '"';
+            }
+        }
+
+        $output .= '<a' . $attributes . '>' . esc_html($item->title) . '</a>';
+    }
+
+    // End Element
+    public function end_el(&$output, $item, $depth = 0, $args = null) {
+        $output .= '</li>';
+    }
 }

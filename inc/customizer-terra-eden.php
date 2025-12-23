@@ -75,6 +75,19 @@ function terra_eden_customize_register($wp_customize) {
         'type'        => 'text',
     ));
 
+    // Header CTA Button Text
+    $wp_customize->add_setting('header_cta_text', array(
+        'default'           => 'Book Now',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+    $wp_customize->add_control('header_cta_text', array(
+        'label'       => __('Header CTA Button Text', 'terraeden'),
+        'description' => __('Text untuk tombol CTA di header', 'terraeden'),
+        'section'     => 'te_branding',
+        'type'        => 'text',
+    ));
+
     // WhatsApp Number
     $wp_customize->add_setting('whatsapp_number', array(
         'default'           => '6281234567890',
