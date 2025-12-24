@@ -111,25 +111,25 @@ function terra_eden_customize_register($wp_customize) {
 
     // Hero Background Desktop
     $wp_customize->add_setting('hero_bg_image', array(
-        'default'           => home_url() . '/wp-content/uploads/2025/09/terra-eden-hero.webp',
+        'default'           => '',
         'sanitize_callback' => 'esc_url_raw',
         'transport'         => 'refresh',
     ));
     $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'hero_bg_image', array(
         'label'       => __('Hero Background (Desktop)', 'terraeden'),
-        'description' => __('Rekomendasi: 1920x1080px', 'terraeden'),
+        'description' => __('Rekomendasi: 1920x1080px. Default: terra-eden-hero.webp', 'terraeden'),
         'section'     => 'te_hero',
     )));
 
     // Hero Background Mobile
     $wp_customize->add_setting('hero_bg_image_mobile', array(
-        'default'           => home_url() . '/wp-content/uploads/2025/09/terra-eden-hero-mobile.webp',
+        'default'           => '',
         'sanitize_callback' => 'esc_url_raw',
         'transport'         => 'refresh',
     ));
     $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'hero_bg_image_mobile', array(
         'label'       => __('Hero Background (Mobile)', 'terraeden'),
-        'description' => __('Rekomendasi: 640x960px', 'terraeden'),
+        'description' => __('Rekomendasi: 640x960px. Default: terra-eden-hero-mobile.webp', 'terraeden'),
         'section'     => 'te_hero',
     )));
 

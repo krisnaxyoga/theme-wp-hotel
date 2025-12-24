@@ -240,12 +240,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Close menu on link click (termasuk menu dinamis)
         mobileMenu.addEventListener('click', function(e) {
+            // Don't close if clicking dropdown toggle
+            if (e.target.closest('.mobile-dropdown-toggle')) {
+                return;
+            }
             if (e.target.closest('a')) {
                 mobileMenu.classList.add('hidden');
                 menuIcon.classList.remove('hidden');
                 closeIcon.classList.add('hidden');
                 document.body.style.overflow = '';
             }
+        });
+
+        // Mobile dropdown toggle
+        const dropdownToggles = mobileMenu.querySelectorAll('.mobile-dropdown-toggle');
+        dropdownToggles.forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const li = this.closest('li');
+                const submenu = li.querySelector('.mobile-submenu');
+                const icon = this.querySelector('svg');
+
+                if (submenu) {
+                    submenu.classList.toggle('hidden');
+                    // Rotate arrow icon
+                    if (submenu.classList.contains('hidden')) {
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                }
+            });
         });
     }
 });

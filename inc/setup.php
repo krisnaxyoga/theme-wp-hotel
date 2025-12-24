@@ -234,10 +234,10 @@ class Kempinski_Nav_Walker extends Walker_Nav_Menu {
         $classes = empty($item->classes) ? array() : (array) $item->classes;
         $has_children = in_array('menu-item-has-children', $classes);
 
-        // Li classes
-        $li_class = $depth === 0 ? '' : '';
+        // Li classes - list-none to remove bullet points
+        $li_class = 'list-none';
         if ($has_children && $depth === 0) {
-            $li_class = 'group relative';
+            $li_class = 'list-none group relative';
         }
 
         $output .= '<li class="' . esc_attr($li_class) . '">';
@@ -286,13 +286,13 @@ class Kempinski_Nav_Walker extends Walker_Nav_Menu {
 }
 
 /*--------------------------------------------------------------
-8. Custom Nav Walker for Mobile Menu
+8. Custom Nav Walker for Mobile Menu with Dropdown
 --------------------------------------------------------------*/
 class Kempinski_Mobile_Nav_Walker extends Walker_Nav_Menu {
 
-    // Start Level - for submenus
+    // Start Level - for submenus (hidden by default)
     public function start_lvl(&$output, $depth = 0, $args = null) {
-        $output .= '<ul class="pl-4 mt-2 space-y-2 border-l border-white/20">';
+        $output .= '<ul class="mobile-submenu hidden pl-4 mt-3 space-y-3 border-l border-white/20">';
     }
 
     // End Level
@@ -302,13 +302,21 @@ class Kempinski_Mobile_Nav_Walker extends Walker_Nav_Menu {
 
     // Start Element
     public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
-        $output .= '<li>';
+        $classes = empty($item->classes) ? array() : (array) $item->classes;
+        $has_children = in_array('menu-item-has-children', $classes);
+
+        $output .= '<li class="list-none">';
 
         // Link classes based on depth
         if ($depth === 0) {
             $link_class = 'text-white/80 hover:text-[#b5a191] text-sm uppercase tracking-[0.15em] font-medium transition-colors mobile-menu-link';
         } else {
-            $link_class = 'text-white/60 hover:text-[#b5a191] text-sm transition-colors mobile-menu-link';
+            $link_class = 'text-white/60 hover:text-[#b5a191] text-sm transition-colors mobile-menu-link block py-1';
+        }
+
+        // If has children at depth 0, wrap in flex container with toggle button
+        if ($has_children && $depth === 0) {
+            $output .= '<div class="flex items-center justify-between">';
         }
 
         // Build the link
@@ -331,6 +339,14 @@ class Kempinski_Mobile_Nav_Walker extends Walker_Nav_Menu {
         }
 
         $output .= '<a' . $attributes . '>' . esc_html($item->title) . '</a>';
+
+        // Add dropdown toggle button for parent items
+        if ($has_children && $depth === 0) {
+            $output .= '<button type="button" class="mobile-dropdown-toggle p-2 text-white/60 hover:text-[#b5a191] transition-colors" aria-label="Toggle submenu">';
+            $output .= '<svg class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>';
+            $output .= '</button>';
+            $output .= '</div>';
+        }
     }
 
     // End Element

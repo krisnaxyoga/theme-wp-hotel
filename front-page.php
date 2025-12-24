@@ -7,63 +7,192 @@
 get_template_part('template-parts/header-kempinski'); ?>
 
 <!-- Hero Section - Fullscreen Kempinski Style -->
-<section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+<?php
+// Get hero images with dynamic fallback
+$hero_desktop = get_theme_mod('hero_bg_image');
+$hero_mobile = get_theme_mod('hero_bg_image_mobile');
+
+// Use dynamic default if not set
+if (empty($hero_desktop)) {
+    $hero_desktop = get_template_directory_uri() . '/assets/images/terra-eden-hero.webp';
+    // Fallback to uploads if theme asset doesn't exist
+    if (!file_exists(get_template_directory() . '/assets/images/terra-eden-hero.webp')) {
+        $hero_desktop = home_url('/wp-content/uploads/2025/09/terra-eden-hero.webp');
+    }
+}
+if (empty($hero_mobile)) {
+    $hero_mobile = get_template_directory_uri() . '/assets/images/terra-eden-hero-mobile.webp';
+    // Fallback to uploads if theme asset doesn't exist
+    if (!file_exists(get_template_directory() . '/assets/images/terra-eden-hero-mobile.webp')) {
+        $hero_mobile = home_url('/wp-content/uploads/2025/09/terra-eden-hero-mobile.webp');
+    }
+}
+?>
+<style>
+/* Hero Section - Full Screen Responsive */
+#home {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#home picture,
+#home picture img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Hero content container */
+#home .hero-content {
+    position: relative;
+    z-index: 20;
+    padding: 80px 20px 80px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Title responsive sizes */
+#home .hero-content h1 {
+    font-size: 3rem;
+    line-height: 1.1;
+}
+
+@media (min-width: 640px) {
+    #home .hero-content h1 {
+        font-size: 4rem;
+    }
+}
+
+@media (min-width: 768px) {
+    #home .hero-content h1 {
+        font-size: 5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    #home .hero-content h1 {
+        font-size: 6rem;
+    }
+}
+
+/* Mobile specific */
+@media (max-width: 640px) {
+    #home {
+        height: 100svh;
+        min-height: 100svh;
+    }
+
+    #home .hero-content {
+        padding: 90px 16px 90px;
+    }
+
+    #home .hero-content h1 {
+        font-size: 2.75rem;
+        line-height: 1.05;
+        margin-bottom: 1rem;
+    }
+
+    #home .hero-content .hero-subtitle {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 1.25rem;
+    }
+
+    #home .hero-content .hero-buttons {
+        gap: 10px;
+    }
+
+    #home .hero-content .hero-buttons a {
+        padding: 12px 20px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 375px) {
+    #home .hero-content h1 {
+        font-size: 2.25rem;
+    }
+
+    #home .hero-content .hero-subtitle {
+        font-size: 0.85rem;
+    }
+}
+
+/* Fix for iOS Safari address bar */
+@supports (-webkit-touch-callout: none) {
+    #home {
+        min-height: -webkit-fill-available;
+    }
+}
+</style>
+
+<section id="home">
     <!-- Background Video/Image -->
     <div class="absolute inset-0 z-0">
         <picture>
-            <source media="(max-width: 640px)" srcset="<?php echo esc_url(get_theme_mod('hero_bg_image_mobile', home_url() . '/wp-content/uploads/2025/09/terra-eden-hero-mobile.webp')); ?>">
-            <img src="<?php echo esc_url(get_theme_mod('hero_bg_image', home_url() . '/wp-content/uploads/2025/09/terra-eden-hero.webp')); ?>"
+            <source media="(max-width: 640px)" srcset="<?php echo esc_url($hero_mobile); ?>">
+            <img src="<?php echo esc_url($hero_desktop); ?>"
                 alt="Terra Eden Bali - Luxury Wooden Villa Investment"
-                class="w-full h-full object-cover scale-105"
                 fetchpriority="high">
         </picture>
     </div>
 
-    <!-- Gradient Overlay - Kempinski Style -->
-    <div class="absolute inset-0 z-10 bg-gradient-to-b from-[#514d32]/60 via-[#514d32]/30 to-transparent"></div>
-    <div class="absolute inset-0 z-10 bg-gradient-to-t from-[#514d32]/80 via-transparent to-transparent"></div>
+    <!-- Gradient Overlays - Kempinski Style (Dual Layer for Better Text Visibility) -->
+    <div class="absolute inset-0 z-10 bg-gradient-to-b from-[#514d32]/70 via-[#514d32]/40 to-transparent"></div>
+    <div class="absolute inset-0 z-10 bg-gradient-to-t from-[#514d32]/80 via-[#514d32]/30 to-transparent"></div>
 
     <!-- Hero Content -->
-    <div class="relative z-20 text-center px-6 max-w-5xl mx-auto">
+    <div class="hero-content text-center max-w-5xl mx-auto">
         <!-- Elegant Tagline -->
-        <p class="text-[#b5a191] text-sm md:text-base uppercase tracking-[0.3em] mb-6 font-light animate-fade-in-up">
-            Luxury Wooden Villa Investment in Nusa Dua, Bali
+        <p class="text-[#b5a191] text-xs sm:text-sm md:text-base uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 sm:mb-6 font-light">
+            Luxury Wooden Villa Investment
         </p>
 
-        <!-- Main Title - Large Elegant Typography -->
-        <h1 class="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white font-light leading-[1.1] mb-6 animate-fade-in-up animation-delay-200">
+        <!-- Main Title -->
+        <h1 class="font-serif text-white font-light mb-4 sm:mb-6">
             Terra Eden<br><span class="italic">Bali</span>
         </h1>
 
         <!-- Subtitle -->
-        <p class="text-white/80 text-lg md:text-xl lg:text-2xl font-light max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in-up animation-delay-400">
+        <p class="hero-subtitle text-white/80 text-base sm:text-lg md:text-xl font-light max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
             Fully Managed Resort-Style Villas with High ROI & Passive Income
         </p>
 
-        <!-- CTA Buttons - Kempinski Style -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-600">
+        <!-- CTA Buttons -->
+        <div class="hero-buttons flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
             <a href="#villas"
-               class="group inline-flex items-center gap-3 bg-[#b5a191] hover:bg-[#a08d7a] text-[#514d32] px-8 py-4 text-sm uppercase tracking-[0.15em] font-medium transition-all duration-500 hover:tracking-[0.2em] rounded-full">
+               class="group inline-flex items-center gap-2 bg-[#b5a191] hover:bg-[#a08d7a] text-[#514d32] px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm uppercase tracking-[0.1em] sm:tracking-[0.15em] font-medium transition-all duration-300 rounded-full w-full sm:w-auto justify-center">
                 <span>Explore Villas</span>
-                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
             </a>
             <a href="#contact"
-               class="group inline-flex items-center gap-3 bg-transparent border border-white/50 hover:border-white text-white px-8 py-4 text-sm uppercase tracking-[0.15em] font-medium transition-all duration-500 hover:bg-white/10 rounded-full">
+               class="group inline-flex items-center gap-2 bg-transparent border border-white/50 hover:border-white text-white px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm uppercase tracking-[0.1em] sm:tracking-[0.15em] font-medium transition-all duration-300 hover:bg-white/10 rounded-full w-full sm:w-auto justify-center">
                 <span>Request Brochure</span>
-                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
             </a>
         </div>
     </div>
 
-    <!-- Scroll Indicator - Elegant -->
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce-slow">
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 hidden sm:block">
         <div class="flex flex-col items-center gap-2 text-white/60">
             <span class="text-xs uppercase tracking-[0.2em]">Discover</span>
-            <div class="w-px h-12 bg-gradient-to-b from-white/60 to-transparent"></div>
+            <div class="w-px h-10 bg-gradient-to-b from-white/60 to-transparent"></div>
         </div>
     </div>
 </section>
