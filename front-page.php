@@ -8,25 +8,26 @@ get_template_part('template-parts/header-kempinski'); ?>
 
 <!-- Hero Section - Fullscreen Kempinski Style -->
 <?php
-// Get hero images with dynamic fallback
-$hero_desktop = get_theme_mod('hero_bg_image');
-$hero_mobile = get_theme_mod('hero_bg_image_mobile');
+// Get hero images from Customizer (returns full URL)
+$hero_desktop_raw = get_theme_mod('hero_bg_image', '');
+$hero_mobile_raw = get_theme_mod('hero_bg_image_mobile', '');
 
-// Use dynamic default if not set
+// Fix URL if stored with wrong domain (common after migration)
+$hero_desktop = $hero_desktop_raw;
+$hero_mobile = $hero_mobile_raw;
+
+// Fallback to placeholder if Customizer is empty
 if (empty($hero_desktop)) {
-    $hero_desktop = get_template_directory_uri() . '/assets/images/terra-eden-hero.webp';
-    // Fallback to uploads if theme asset doesn't exist
-    if (!file_exists(get_template_directory() . '/assets/images/terra-eden-hero.webp')) {
-        $hero_desktop = home_url('/wp-content/uploads/2025/09/terra-eden-hero.webp');
-    }
+    $hero_desktop = 'https://placehold.co/1920x1080/514d32/b5a191?text=Upload+Hero+Image';
 }
+
 if (empty($hero_mobile)) {
-    $hero_mobile = get_template_directory_uri() . '/assets/images/terra-eden-hero-mobile.webp';
-    // Fallback to uploads if theme asset doesn't exist
-    if (!file_exists(get_template_directory() . '/assets/images/terra-eden-hero-mobile.webp')) {
-        $hero_mobile = home_url('/wp-content/uploads/2025/09/terra-eden-hero-mobile.webp');
-    }
+    $hero_mobile = $hero_desktop; // Use desktop as mobile fallback
 }
+
+// Debug output (visible in page source) - hapus setelah debugging
+echo '<!-- DEBUG Hero Desktop: ' . esc_html($hero_desktop_raw) . ' -->';
+echo '<!-- DEBUG Hero Mobile: ' . esc_html($hero_mobile_raw) . ' -->';
 ?>
 <style>
 /* Hero Section - Full Screen Responsive */
@@ -41,11 +42,16 @@ if (empty($hero_mobile)) {
     overflow: hidden;
 }
 
-#home picture,
-#home picture img {
+#home .hero-bg {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#home .hero-bg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -138,13 +144,15 @@ if (empty($hero_mobile)) {
 </style>
 
 <section id="home">
-    <!-- Background Video/Image -->
-    <div class="absolute inset-0 z-0">
+    <!-- Background Image -->
+    <div class="hero-bg">
         <picture>
             <source media="(max-width: 640px)" srcset="<?php echo esc_url($hero_mobile); ?>">
             <img src="<?php echo esc_url($hero_desktop); ?>"
                 alt="Terra Eden Bali - Luxury Wooden Villa Investment"
-                fetchpriority="high">
+                fetchpriority="high"
+                loading="eager"
+                decoding="async">
         </picture>
     </div>
 
