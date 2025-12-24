@@ -4,33 +4,20 @@
  * Luxury Wooden Villa Investment in Nusa Dua, Bali
  * Kempinski-inspired Luxury Design
  */
-get_template_part('template-parts/header-kempinski'); ?>
+get_template_part('template-parts/header-kempinski');
+
+// Get hero image from Customizer
+$hero_image = get_theme_mod('hero_bg_image', '');
+
+// Fallback jika kosong
+if (empty($hero_image)) {
+    $hero_image = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80';
+}
+?>
 
 <!-- Hero Section - Fullscreen Kempinski Style -->
-<?php
-// Get hero images from Customizer (returns full URL)
-$hero_desktop_raw = get_theme_mod('hero_bg_image', '');
-$hero_mobile_raw = get_theme_mod('hero_bg_image_mobile', '');
-
-// Fix URL if stored with wrong domain (common after migration)
-$hero_desktop = $hero_desktop_raw;
-$hero_mobile = $hero_mobile_raw;
-
-// Fallback to placeholder if Customizer is empty
-if (empty($hero_desktop)) {
-    $hero_desktop = 'https://placehold.co/1920x1080/514d32/b5a191?text=Upload+Hero+Image';
-}
-
-if (empty($hero_mobile)) {
-    $hero_mobile = $hero_desktop; // Use desktop as mobile fallback
-}
-
-// Debug output (visible in page source) - hapus setelah debugging
-echo '<!-- DEBUG Hero Desktop: ' . esc_html($hero_desktop_raw) . ' -->';
-echo '<!-- DEBUG Hero Mobile: ' . esc_html($hero_mobile_raw) . ' -->';
-?>
 <style>
-/* Hero Section - Full Screen Responsive */
+/* Hero Section - Full Screen with Background Image */
 #home {
     position: relative;
     height: 100vh;
@@ -40,22 +27,9 @@ echo '<!-- DEBUG Hero Mobile: ' . esc_html($hero_mobile_raw) . ' -->';
     align-items: center;
     justify-content: center;
     overflow: hidden;
-}
-
-#home .hero-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-#home .hero-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Hero content container */
@@ -143,22 +117,10 @@ echo '<!-- DEBUG Hero Mobile: ' . esc_html($hero_mobile_raw) . ' -->';
 }
 </style>
 
-<section id="home">
-    <!-- Background Image -->
-    <div class="hero-bg">
-        <picture>
-            <source media="(max-width: 640px)" srcset="<?php echo esc_url($hero_mobile); ?>">
-            <img src="<?php echo esc_url($hero_desktop); ?>"
-                alt="Terra Eden Bali - Luxury Wooden Villa Investment"
-                fetchpriority="high"
-                loading="eager"
-                decoding="async">
-        </picture>
-    </div>
-
-    <!-- Gradient Overlays - Kempinski Style (Dual Layer for Better Text Visibility) -->
-    <div class="absolute inset-0 z-10 bg-gradient-to-b from-[#514d32]/70 via-[#514d32]/40 to-transparent"></div>
-    <div class="absolute inset-0 z-10 bg-gradient-to-t from-[#514d32]/80 via-[#514d32]/30 to-transparent"></div>
+<section id="home" style="background-image: url('<?php echo esc_url($hero_image); ?>');">
+    <!-- Gradient Overlays -->
+    <div class="absolute inset-0 z-10 bg-gradient-to-b from-[#514d32]/50 via-[#514d32]/30 to-transparent"></div>
+    <div class="absolute inset-0 z-10 bg-gradient-to-t from-[#514d32]/60 via-transparent to-transparent"></div>
 
     <!-- Hero Content -->
     <div class="hero-content text-center max-w-5xl mx-auto">
